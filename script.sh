@@ -42,3 +42,42 @@ nohup node app.js > app.log 2>&1 &
 
 # Wait for the application to start
 sleep 3
+echo "Generating deployment logs: "
+
+PID=$(pgrep -f "node app.js")
+
+REPORT_FILE="deployment_report.txt"
+
+{
+echo "Date          : $(date)"
+echo "Hostname      : $(hostname)"
+echo "IP Address    : $(hostname -I)"
+echo "Application   : node app.js"
+echo "Process ID    : $PID"
+echo "Node Version  : $(node -v)"
+echo "NPM Version   : $(npm -v)"
+echo
+ps -fp "$PID"
+echo
+
+ps -p "$PID" -o pid,ppid,cmd,%cpu,%mem
+echo
+
+echo " DISK USAGE"
+df -h
+echo
+
+echo "MEMORY"
+free -h
+echo
+
+echo "PORT LISTENING"
+ss -tulnp | grep "$PID"
+echo
+
+echo "APPLICATION LOG (Last 10 Lines)"
+tail -10 app.log
+
+} > "$REPORT_FILE"
+echo "Deployment report saved as $REPORT_FILE"
+
