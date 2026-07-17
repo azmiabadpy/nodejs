@@ -26,7 +26,7 @@ if [ -d "node_app" ]; then
 fi
 
 # Clone the repository
-git clone https://github.com/azmiabadpy/nodejs.git node_app
+git clone https://https://github.com/azmiabadpy/nodejs.git node_app
 
 # Move into the project directory
 cd node_app
